@@ -1,144 +1,141 @@
-/* ================== CONFIG ================== */
-const API_BASE = 'https://api.nopayo.es';   // <-- tu API Gateway
-/* ============================================ */
+// assets/js/home.js
 
-/* ========== helpers ========== */
-async function getProducts(){
-  const r = await fetch(`${API_BASE}/products`,{cache:'no-store'});
-  if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-  return r.json();
+// ← URL base de tu API Gateway
+const API_BASE = 'https://api.nopayo.es';
+
+/** 1) Fetch de productos **/
+async function getProducts() {
+  const res = await fetch(`${API_BASE}/products`, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+  return res.json(); // devuelve un array [{ productId, name, price, category, new, photo1, description… }, …]
 }
-function ensureLoop(arr){
-  if(arr.length===1) arr.push({...arr[0]});
-  if(arr.length===2) arr.push(...arr);
-  return arr;
+
+/** 2) Si hay 1–2 productos, duplica para que Swiper pueda hacer loop */
+function normalizaSlides(items) {
+  if (items.length === 1) {
+    items.push({ ...items[0] });
+  }
+  if (items.length === 2) {
+    items.push(...items);
+  }
+  return items;
 }
-function tplSlide(p){
-  return `
-  <article class="home__article swiper-slide" data-id="${p.productId}">
-     <img src="${p.photo1}" alt="${p.name}" class="home__img">
-     <h2 class="home__product">${p.name}</h2>
-     <h3 class="home__price">€${p.price.toFixed(2)}</h3>
-  </article>`;
+
+/** 3) Construye el HTML de cada slide */
+function buildSlides(items) {
+  return items
+    .map(
+      p => `
+<article class="home__article swiper-slide">
+  <img
+    src="${p.photo1}"
+    alt="${p.name}"
+    class="home__img"
+    data-product-id="${p.productId}"
+    data-description="${p.description || ''}"
+    data-price="${p.price}"
+  />
+  <h2 class="home__product">${p.name}</h2>
+  <h3 class="home__price">€${p.price.toFixed(2)}</h3>
+</article>`
+    )
+    .join('');
 }
-function initSwiper(){
-  new Swiper('.home__swiper',{
-    loop:true,grabCursor:true,slidesPerView:1,
-    navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'}
+
+/** 4) Inicializa Swiper (usa el global Swiper que provee swiper-bundle.min.js) */
+function initSwiper() {
+  /* global Swiper */
+  new Swiper('.home__swiper', {
+    loop: true,
+    grabCursor: true,
+    slidesPerView: 1,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
   });
 }
 
-/* ========= modal refs ========= */
-const $modal = document.getElementById('product-modal');
-const $mBack = document.getElementById('modal-backdrop');
-const $mClose= document.getElementById('modal-close');
-const $mMain = document.getElementById('modal-main-img');
-const $mThumbs= document.getElementById('modal-thumbs');
-const $mName = document.getElementById('modal-name');
-const $mDesc = document.getElementById('modal-description');
-const $mPrice= document.getElementById('modal-price');
-const $mSize = document.getElementById('modal-size');
-const $btnFav= document.getElementById('modal-fav');
-const $btnCart=document.getElementById('modal-cart');
+/** 5) Lógica para abrir/cerrar modal y añadir al carrito */
+function attachModalLogic() {
+  // Abre modal al clickar sobre cualquier slide
+  document.querySelectorAll('.home__article').forEach(slide => {
+    slide.addEventListener('click', () => {
+      const imgEl = slide.querySelector('img.home__img');
+      const productId   = imgEl.dataset.productId;
+      const name        = slide.querySelector('.home__product').textContent;
+      const price       = imgEl.dataset.price;
+      const description = imgEl.dataset.description;
 
-/* ========= viewer refs ========= */
-const $viewer = document.getElementById('viewer');
-const $vBack  = document.getElementById('viewer-backdrop');
-const $vClose = document.getElementById('viewer-close');
-const $vPrev  = document.getElementById('viewer-prev');
-const $vNext  = document.getElementById('viewer-next');
-const $vImg   = document.getElementById('viewer-img');
+      // Rellenamos el modal
+      document.getElementById('modal-main-img').src = imgEl.src;
+      const nameEl = document.getElementById('modal-name');
+      nameEl.textContent = name;
+      nameEl.dataset.productId = productId;
+      document.getElementById('modal-description').textContent = description;
+      document.getElementById('modal-price').textContent = parseFloat(price).toFixed(2);
 
-let viewerPhotos = [];
-let viewerIdx = 0;
-
-/* ========= funciones ========= */
-function openViewer(array,idx){
-  viewerPhotos = array;
-  viewerIdx = idx;
-  $vImg.src = viewerPhotos[viewerIdx];
-  $viewer.classList.remove('hidden');
-}
-function closeViewer(){ $viewer.classList.add('hidden'); }
-function nextViewer(step){
-  viewerIdx = (viewerIdx + step + viewerPhotos.length) % viewerPhotos.length;
-  $vImg.src = viewerPhotos[viewerIdx];
-}
-
-function openModal(prod){
-  $mName.textContent = prod.name;
-  $mDesc.textContent = prod.description;
-  $mPrice.textContent= prod.price.toFixed(2);
-
-  const photos = [prod.photo1,prod.photo2,prod.photo3,prod.photo4].filter(Boolean);
-  $mMain.src = photos[0] ?? '';
-  $mThumbs.innerHTML = photos.map((src,i)=>`
-       <img src="${src}" class="${i===0?'active':''}" data-idx="${i}">
-  `).join('');
-
-  // thumbs click
-  [...$mThumbs.children].forEach(img=>{
-    img.onclick = ()=>{
-      [...$mThumbs.children].forEach(t=>t.classList.remove('active'));
-      img.classList.add('active');$mMain.src = img.src;
-    };
-  });
-
-  // viewer
-  $mMain.onclick = ()=>openViewer(photos,[...$mThumbs.children].findIndex(t=>t.classList.contains('active')));
-
-  // botones fav / cart
-  $btnFav.onclick  = ()=>toggleFav(prod.productId);
-  $btnCart.onclick = ()=>addCart(prod.productId,$mSize.value);
-
-  $modal.classList.remove('hidden');
-}
-function closeModal(){ $modal.classList.add('hidden'); }
-
-function toggleFav(id){
-  const favs = JSON.parse(localStorage.getItem('favs')||'[]');
-  const idx = favs.indexOf(id);
-  if(idx>-1){favs.splice(idx,1);alert('Quitado de favoritos');}
-  else {favs.push(id);alert('Añadido a favoritos');}
-  localStorage.setItem('favs',JSON.stringify(favs));
-}
-function addCart(id,size){
-  const cart = JSON.parse(localStorage.getItem('cart')||'[]');
-  cart.push({id,size,qty:1});localStorage.setItem('cart',JSON.stringify(cart));
-  alert('Añadido al carrito');
-}
-
-/* ========= cerrar overlays ========= */
-$mBack.onclick = $mClose.onclick = closeModal;
-$vBack.onclick = $vClose.onclick = ()=>closeViewer();
-$vPrev.onclick = ()=>nextViewer(-1);
-$vNext.onclick = ()=>nextViewer(1);
-
-/* ========= ARRANQUE ========= */
-(async()=>{
-  const wrap = document.getElementById('home-swiper-wrapper');
-
-  try{
-    let prods = await getProducts();
-    // filtros de página (si existen variables globales)
-    if(window.FILTER_CATEGORY) prods = prods.filter(p=>p.category===FILTER_CATEGORY);
-    if(window.FILTER_OTHERS)   prods = prods.filter(p=>!['Camisetas','Sudaderas'].includes(p.category));
-    if(window.FILTER_NEW)      prods = prods.filter(p=>p.new==='Yes' || p.new===true);
-
-    prods = ensureLoop(prods);
-    wrap.innerHTML = prods.map(tplSlide).join('');
-    initSwiper();
-
-    // click slide -> modal
-    wrap.addEventListener('click',e=>{
-      const art = e.target.closest('.home__article');
-      if(!art) return;
-      const prod = prods.find(p=>p.productId===art.dataset.id);
-      prod && openModal(prod);
+      // Mostramos
+      document.getElementById('product-modal').classList.remove('hidden');
     });
+  });
 
-  }catch(err){
-    console.error(err);
-    wrap.innerHTML='<p style="text-align:center;width:100%">No se pudieron cargar los productos.</p>';
+  // Cerrar modal
+  document.getElementById('modal-close').addEventListener('click', () => {
+    document.getElementById('product-modal').classList.add('hidden');
+  });
+
+  // Añadir al carrito
+  document.getElementById('modal-cart').addEventListener('click', () => {
+    const size = document.getElementById('modal-size').value;
+    if (!size) {
+      alert('Selecciona una talla');
+      return;
+    }
+    const productId = document.getElementById('modal-name').dataset.productId;
+    const name  = document.getElementById('modal-name').textContent;
+    const price = parseFloat(document.getElementById('modal-price').textContent);
+    const img   = document.getElementById('modal-main-img').src;
+
+    // Código de tu carrito en localStorage (puede variar según tu implementación)
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart.push({ productId, name, price, img, size, q: 1 });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert('Añadido al carrito');
+    document.getElementById('product-modal').classList.add('hidden');
+  });
+}
+
+/** 6) Filtra según la página actual */
+function filterProducts(all) {
+  const path = window.location.pathname.split('/').pop();
+  if (path === 'camisetas.html') {
+    return all.filter(p => p.category === 'Camisetas');
+  } else if (path === 'sudaderas.html') {
+    return all.filter(p => p.category === 'Sudaderas');
+  } else if (path === 'otros.html') {
+    return all.filter(p => p.category !== 'Camisetas' && p.category !== 'Sudaderas');
+  } else if (path === 'news.html') {
+    return all.filter(p => (p.new || '').toLowerCase() === 'yes');
+  }
+  // Index (todos)
+  return all;
+}
+
+/** 7) Arranque: carga, filtra, renderiza, inicializa */
+(async () => {
+  const wrapper = document.getElementById('home-swiper-wrapper');
+  if (!wrapper) return; // si no hay slider en esta página
+  try {
+    const all     = await getProducts();
+    const filted  = filterProducts(all);
+    const slides  = normalizaSlides(filted);
+    wrapper.innerHTML = buildSlides(slides);
+    initSwiper();
+    attachModalLogic();
+  } catch (err) {
+    console.error('Error cargando productos:', err);
+    wrapper.innerHTML =
+      '<p style="text-align:center;width:100%">No se pudieron cargar los productos.</p>';
   }
 })();

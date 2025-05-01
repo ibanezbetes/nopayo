@@ -1,4 +1,14 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Logout</title></head>
-<body><script>
-localStorage.removeItem('idToken');location='/index.html';
-</script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Logout</title>
+</head>
+<body>
+  <script>
+    // Quita el token y vuelve al home
+    localStorage.removeItem('idToken');
+    window.location.href = '/index.html';
+  </script>
+</body>
+</html>
