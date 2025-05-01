@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Checkout | Nopayo</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="icon" href="images/favicon.ico">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand"><a href="index.html"><img src="images/logoNav.png" alt="NOPAYO"></a></div>
+</header>
+
+<main class="container">
+  <h1 class="section-title">Datos de envío</h1>
+
+  <form class="row g-3">
+    <div class="col-md-6"><label class="form-label">Nombre</label><input required class="form-control"></div>
+    <div class="col-md-6"><label class="form-label">Email</label><input type="email" required class="form-control"></div>
+    <div class="col-12"><label class="form-label">Dirección</label><input required class="form-control"></div>
+    <div class="col-6 col-md-4"><label class="form-label">Ciudad</label><input required class="form-control"></div>
+    <div class="col-6 col-md-2"><label class="form-label">C.P.</label><input required class="form-control"></div>
+  </form>
+
+  <h2 class="mt-4">Resumen</h2>
+  <ul id="summary" class="list-group mb-3"></ul>
+  <h3>Total: €<span id="checkout-total">0.00</span></h3>
+
+  <button class="btn btn-success" disabled>Pagar (próximamente)</button>
+</main>
+
+<script src="js/app-nopayo.js"></script>
+</body>
+</html>

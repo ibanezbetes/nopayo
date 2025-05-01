@@ -1,0 +1,37 @@
+/* ---------- NAV override ---------- */
+header.navbar{
+    display:flex;flex-wrap:wrap;align-items:center;gap:1rem;
+    background:#222;padding:.75rem 1rem;color:#fff;
+  }
+  header.navbar .brand{flex:1 1 100%;text-align:center}
+  header.navbar .brand img{height:48px}
+  header.navbar ul.menu{list-style:none;margin:0 auto;padding:0;display:flex;flex-wrap:wrap;gap:1rem}
+  header.navbar ul.menu a,header.navbar ul.menu button{
+    color:#fff;background:none;border:none;text-decoration:none;font-size:1rem;cursor:pointer
+  }
+  @media(min-width:768px){
+    header.navbar{flex-wrap:nowrap}
+    header.navbar .brand{flex:0 0 auto;text-align:left}
+  }
+  
+  /* ---------- contador carrito ---------- */
+  .cart-counter{position:relative;cursor:pointer}
+  .cart-counter img{height:24px}
+  .cart-counter .badge{
+    position:absolute;top:-6px;right:-10px;background:#e33;color:#fff;border-radius:50%;
+    width:18px;height:18px;font-size:.65rem;display:flex;align-items:center;justify-content:center
+  }
+  
+  /* ---------- grid de productos ---------- */
+  #grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}
+  .card{
+    border:1px solid #ddd;border-radius:4px;padding:1rem;display:flex;flex-direction:column;height:100%
+  }
+  .card img{max-width:100%}
+  .card select{margin:.4rem 0}
+  .card button{margin-top:auto}
+  
+  /* ---------- tabla carrito ---------- */
+  table .q,table .del{background:none;border:none;cursor:pointer}
+  table .q{padding:0 .4rem;font-weight:bold}
+  

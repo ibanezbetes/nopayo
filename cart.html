@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Carrito | Nopayo</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="icon" href="images/favicon.ico">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="brand"><a href="index.html"><img src="images/logoNav.png" alt="NOPAYO"></a></div>
+</header>
+
+<main class="container">
+  <h1 class="section-title">Tu carrito</h1>
+  <table class="table">
+    <thead><tr><th>Producto</th><th>Talla</th><th>Uds.</th><th>Subtotal</th><th></th></tr></thead>
+    <tbody id="cart-body"></tbody>
+  </table>
+  <h3>Total: €<span id="cart-total">0.00</span></h3>
+  <a href="checkout.html" class="btn btn-primary">Proceder a pago</a>
+</main>
+
+<script src="js/app-nopayo.js"></script>
+<script src="assets/js/menu.js"></script>
+
+</body>
+</html>

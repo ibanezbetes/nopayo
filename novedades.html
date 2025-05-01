@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.0.1/remixicon.min.css"/>
+  <link rel="stylesheet" href="assets/css/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="assets/css/styles.css"/>
+  <title>Nopayo · Novedades</title>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">NOPAYO</a>
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="novedades.html" class="nav__link">Novedades</a></li>
+          <li class="nav__item"><a href="camisetas.html" class="nav__link">Camisetas</a></li>
+          <li class="nav__item"><a href="sudaderas.html" class="nav__link">Sudaderas</a></li>
+          <li class="nav__item"><a href="otros.html"     class="nav__link">Otros</a></li>
+          <li class="nav__item"><a href="gallery.html"   class="nav__link">Galería</a></li>
+          <li class="nav__item"><a href="#"              class="nav__link">Iniciar sesión</a></li>
+        </ul>
+        <div class="nav__close" id="nav-close"><i class="ri-close-line"></i></div>
+      </div>
+      <div class="nav__actions">
+        <i class="ri-heart-3-line"></i>
+        <i class="ri-shopping-cart-line"></i>
+        <div class="nav__toggle" id="nav-toggle"><i class="ri-menu-line"></i></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="home">
+      <div class="home__container container">
+        <div class="home__content">
+          <div class="home__circle"><div class="home__subcircle"></div><h1 class="home__title">Novedades</h1></div>
+          <div class="home__swiper swiper"><div class="swiper-wrapper" id="home-swiper-wrapper"></div></div>
+          <div class="swiper-button-prev"><i class="ri-arrow-left-line"></i></div>
+          <div class="swiper-button-next"><i class="ri-arrow-right-line"></i></div>
+        </div>
+        <footer class="home__footer">
+          <div class="home__languages">ES | EN</div>
+          <div class="home__social">
+            <a href="mailto:info@nopayo.es" class="home__social-link"><i class="ri-mail-line"></i></a>
+            <a href="https://instagram.com/" target="_blank" class="home__social-link"><i class="ri-instagram-line"></i></a>
+            <a href="https://wa.me/XXXXXXXXX" target="_blank" class="home__social-link"><i class="ri-whatsapp-line"></i></a>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/scrollreveal.min.js"></script>
+  <script src="assets/js/swiper-bundle.min.js"></script>
+  <script>window.FILTER_NEW = true;</script>
+  <script src="assets/js/home-filter.js"></script>
+</body>
+</html>

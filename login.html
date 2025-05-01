@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión · Nopayo</title>
+
+  <link rel="shortcut icon" href="images/favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.0.1/remixicon.min.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <style>
+    /* pantalla simple con centro vertical */
+    .login-wrapper{
+      min-height:100vh;display:flex;flex-direction:column;
+      justify-content:center;align-items:center;row-gap:2rem;
+      color:#fff9aa;font-family:Montserrat,sans-serif;text-align:center
+    }
+    .login-btn{
+      padding:.9rem 2.5rem;border:none;border-radius:8px;
+      background:#fff9aa;color:hsl(34,52%,54%);
+      font-weight:600;font-size:1rem;cursor:pointer
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-wrapper">
+      <img src="images/logo.png" alt="NOPAYO" style="width:120px">
+      <p>Para continuar necesitas iniciar sesión / registrarte.</p>
+      <button id="login-btn" class="login-btn">Entrar con Cognito</button>
+  </div>
+
+  <script type="module">
+    /* -------- CONSTANTES DE TU POOL -------- */
+    const COGNITO_DOMAIN = 'https://nopayo.auth.us-east-1.amazoncognito.com';
+    const CLIENT_ID      = '1vo21r2lgv19fr990puhu46vd2';
+    const REDIRECT_URI   = 'https://nopayo.es/callback.html';
+    /* --------------------------------------- */
+
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const url =
+        `${COGNITO_DOMAIN}/login?` +
+        `client_id=${CLIENT_ID}` +
+        `&response_type=token` +
+        `&scope=openid+email` +
+        `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+      window.location.href = url;          // salto al Hosted UI
+    });
+
+    /* Si ya hay token, vuelve directamente a inicio */
+    if (localStorage.getItem('idToken')){
+      window.location.replace('index.html');
+    }
+  </script>
+</body>
+</html>
