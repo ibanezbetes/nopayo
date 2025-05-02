@@ -29,14 +29,25 @@
     .btn-order:hover { background: var(--first-color-lighten); }
     @media(max-width:1150px){ .checkout__container { grid-template-columns:1fr; } }
   </style>
+  <!-- AWS Amplify CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/aws-amplify@4.4.4/dist/aws-amplify.min.js"></script>
 </head>
 <body>
   <!-- Header -->
   <header class="header" id="header">
     <nav class="nav container">
-      <a href="index.html" class="nav__logo"><img src="images/logo.png" alt="NOPAYO — Inicio"/></a>
-      <div class="nav__menu" id="nav-menu">…</div>
-      <div class="nav__actions"><a href="cart.html"><i class="ri-shopping-cart-line"></i></a><div class="nav__toggle" id="nav-toggle"><i class="ri-menu-line"></i></div></div>
+      <a href="index.html" class="nav__logo">
+        <img src="images/logo.png" alt="NOPAYO — Inicio"/>
+      </a>
+      <div class="nav__menu" id="nav-menu">
+        <!-- aquí van tus enlaces de menú -->
+      </div>
+      <div class="nav__actions">
+        <a href="cart.html"><i class="ri-shopping-cart-line"></i></a>
+        <div class="nav__toggle" id="nav-toggle">
+          <i class="ri-menu-line"></i>
+        </div>
+      </div>
     </nav>
   </header>
 
@@ -49,22 +60,51 @@
         <div class="checkout__card checkout__summary">
           <h2>Tu carrito (<span id="checkout-summary-count">0</span>)</h2>
           <ul id="checkout-summary-list"></ul>
-          <div class="total"><span>Total</span><span>€<span id="checkout-summary-total">0.00</span></span></div>
+          <div class="total">
+            <span>Total</span>
+            <span>€<span id="checkout-summary-total">0.00</span></span>
+          </div>
         </div>
-        <!-- Dirección de facturación -->
+        <!-- Formulario de facturación -->
         <div class="checkout__card checkout__form">
           <h2>Dirección de Facturación</h2>
-          <div class="form-group"><label for="firstName">Nombre</label><input type="text" id="firstName" required/></div>
-          <div class="form-group"><label for="lastName">Apellidos</label><input type="text" id="lastName" required/></div>
-          <div class="form-group"><label for="email">Email</label><input type="email" id="email" required/></div>
-          <div class="form-group"><label for="address">Dirección</label><input type="text" id="address" required/></div>
-          <div class="form-group"><label for="postalCode">Código Postal</label><input type="text" id="postalCode" required/></div>
-          <div class="form-group"><label for="locality">Localidad</label><input type="text" id="locality" required/></div>
-          <div class="form-group"><label for="phone">Teléfono</label><input type="tel" id="phone" required/></div>
-          <div class="checkbox-group"><input type="checkbox" id="sameAddress" checked/><label for="sameAddress">La dirección de envío es igual</label></div>
+          <div class="form-group">
+            <label for="firstName">Nombre</label>
+            <input type="text" id="firstName" required/>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Apellidos</label>
+            <input type="text" id="lastName" required/>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required/>
+          </div>
+          <div class="form-group">
+            <label for="address">Dirección</label>
+            <input type="text" id="address" required/>
+          </div>
+          <div class="form-group">
+            <label for="postalCode">Código Postal</label>
+            <input type="text" id="postalCode" required/>
+          </div>
+          <div class="form-group">
+            <label for="locality">Localidad</label>
+            <input type="text" id="locality" required/>
+          </div>
+          <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input type="tel" id="phone" required/>
+          </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="sameAddress" checked/>
+            <label for="sameAddress">La dirección de envío es igual</label>
+          </div>
         </div>
         <!-- Botón de crear pedido -->
-        <div class="checkout__actions"><button class="btn-order" id="place-order-btn">Realizar Pedido</button></div>
+        <div class="checkout__actions">
+          <button class="btn-order" id="place-order-btn">Realizar Pedido</button>
+        </div>
       </div>
     </section>
   </main>
@@ -72,87 +112,141 @@
   <!-- Footer -->
   <footer class="home__footer">…</footer>
 
-  <!-- AWS Amplify CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/aws-amplify@4.4.4/dist/aws-amplify.min.js"></script>
+  <!-- Lógica de menú, carrito y pedido -->
   <script>
-    // Inline AWS config
+  document.addEventListener('DOMContentLoaded', () => {
+    // ——— Toggle menú ———
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu   = document.getElementById('nav-menu');
+    if (navToggle && navMenu) {
+      navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('show-menu');
+      });
+    }
+
+    // ——— Configurar AWS Amplify ———
     const awsconfig = {
       aws_cognito_region: "us-east-1",
       aws_user_pools_id: "us-east-1_RiJ4pDIaa",
       aws_user_pools_web_client_id: "6l7mg3kafjuugr1op4f83j8udv",
       aws_cloud_logic_custom: [
-        { name: "ordersApi", endpoint: "https://xi7qwmpqs1.execute-api.us-east-1.amazonaws.com/dev", region: "us-east-1" }
+        {
+          name: "ordersApi",
+          endpoint: "https://xi7qwmpqs1.execute-api.us-east-1.amazonaws.com/dev",
+          region: "us-east-1"
+        }
       ]
     };
-    window.Amplify.configure(awsconfig);
-    const Auth = window.Amplify.Auth;
+    if (window.Amplify?.configure) {
+      window.Amplify.configure(awsconfig);
+    }
+    const Auth = window.Amplify?.Auth;
     const apiEndpoint = awsconfig.aws_cloud_logic_custom[0].endpoint;
-    console.log('Usando endpoint API:', apiEndpoint);
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      const storedCart = localStorage.getItem('cart') || localStorage.getItem('cartItems') || localStorage.getItem('cartItemsList');
-      console.log('Stored cart raw:', storedCart);
-      const cart = storedCart ? JSON.parse(storedCart) : [];
-      console.log('Cart:', cart);
-      const list = document.getElementById('checkout-summary-list');
-      const count = document.getElementById('checkout-summary-count');
-      const totalEl = document.getElementById('checkout-summary-total');
-      list.innerHTML = '';
-      let sumQty = 0, sumTotal = 0;
+    // ——— Leer y agrupar carrito ———
+    const raw = JSON.parse(localStorage.getItem('cart') || '[]');
+    const items = raw.reduce((acc, p) => {
+      const found = acc.find(x => x.productId === p.productId);
+      if (found) found.quantity += 1;
+      else acc.push({ ...p, quantity: 1 });
+      return acc;
+    }, []);
 
-      if (!cart.length) {
-        list.innerHTML = '<li>Tu carrito está vacío.</li>';
-      } else {
-        cart.forEach(item => {
-          sumQty += item.quantity;
-          sumTotal += item.price * item.quantity;
-          const li = document.createElement('li');
-          li.innerHTML = `<span>${item.name} x${item.quantity}</span><span>€${(item.price * item.quantity).toFixed(2)}</span>`;
-          list.appendChild(li);
-        });
-      }
-      count.textContent = sumQty;
-      totalEl.textContent = sumTotal.toFixed(2);
+    // ——— Renderizar resumen ———
+    const listEl   = document.getElementById('checkout-summary-list');
+    const countEl  = document.getElementById('checkout-summary-count');
+    const totalEl  = document.getElementById('checkout-summary-total');
+    let sumQty = 0, sumPrice = 0;
+    listEl.innerHTML = '';
+    if (!items.length) {
+      listEl.innerHTML = '<li>Tu carrito está vacío.</li>';
+    } else {
+      items.forEach(p => {
+        const sub = p.price * p.quantity;
+        sumQty   += p.quantity;
+        sumPrice += sub;
+        listEl.insertAdjacentHTML('beforeend', `
+          <li>
+            <span>${p.name} x${p.quantity}</span>
+            <span>€${sub.toFixed(2)}</span>
+          </li>
+        `);
+      });
+    }
+    countEl.textContent = sumQty;
+    totalEl.textContent = sumPrice.toFixed(2);
 
-      document.getElementById('place-order-btn').addEventListener('click', async () => {
+    // ——— Envío de pedido ———
+    const btn = document.getElementById('place-order-btn');
+    if (btn) {
+      btn.addEventListener('click', async () => {
+        // Agarrar los inputs y validar que existan
+        const firstNameEl = document.getElementById('firstName');
+        const lastNameEl  = document.getElementById('lastName');
+        const emailEl     = document.getElementById('email');
+        const addressEl   = document.getElementById('address');
+        const postalEl    = document.getElementById('postalCode');
+        const localityEl  = document.getElementById('locality');
+        const phoneEl     = document.getElementById('phone');
+
+        if (![firstNameEl,lastNameEl,emailEl,addressEl,postalEl,localityEl,phoneEl].every(e=>e)) {
+          console.error('Faltan campos del formulario', {
+            firstNameEl,lastNameEl,emailEl,addressEl,postalEl,localityEl,phoneEl
+          });
+          return alert('Error: faltan campos del formulario.');
+        }
+
         const billing = {
-          firstName: document.getElementById('firstName').value,
-          lastName: document.getElementById('lastName').value,
-          email: document.getElementById('email').value,
-          address: document.getElementById('address').value,
-          postalCode: document.getElementById('postalCode').value,
-          locality: document.getElementById('locality').value,
-          phone: document.getElementById('phone').value
+          firstName:  firstNameEl.value.trim(),
+          lastName:   lastNameEl.value.trim(),
+          email:      emailEl.value.trim(),
+          address:    addressEl.value.trim(),
+          postalCode: postalEl.value.trim(),
+          locality:   localityEl.value.trim(),
+          phone:      phoneEl.value.trim()
         };
-        const payload = { total: sumTotal, items: cart, billing };
-        const headers = { 'Content-Type': 'application/json' };
-        try {
-          const user = await Auth.currentAuthenticatedUser();
-          const token = user.signInUserSession.idToken.jwtToken;
-          headers.Authorization = `Bearer ${token}`;
-        } catch {}
 
+        const payload = { total: sumPrice, items, billing };
+        const headers = { 'Content-Type': 'application/json' };
+
+        // Intentar añadir token si existe sesión
         try {
-          const res = await fetch(`${apiEndpoint}/orders`, {
+          if (Auth) {
+            const user  = await Auth.currentAuthenticatedUser();
+            const token = user.signInUserSession.idToken.jwtToken;
+            headers.Authorization = `Bearer ${token}`;
+          }
+        } catch { console.warn('Usuario no autenticado'); }
+
+        // Llamada a la API
+        try {
+          const res  = await fetch(`${apiEndpoint}/orders`, {
             method: 'POST',
             headers,
             body: JSON.stringify(payload)
           });
-          const data = await res.json();
+          const text = await res.text();
+          console.log('API /orders status:', res.status, 'response:', text);
+
+          const data = (() => {
+            try { return JSON.parse(text); }
+            catch { return { error: text }; }
+          })();
+
           if (res.ok) {
             alert('Pedido realizado: ' + data.orderId);
             localStorage.removeItem('cart');
             window.location.href = 'account.html';
           } else {
-            throw new Error(data.error);
+            throw new Error(data.error || res.statusText);
           }
         } catch (e) {
-          console.error(e);
-          alert('Error al generar el pedido');
+          console.error('Error enviando pedido:', e);
+          alert('Error al generar el pedido:\n' + e.message);
         }
       });
-    });
+    }
+  });
   </script>
-  <script src="assets/js/menu.js"></script>
 </body>
 </html>

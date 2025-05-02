@@ -1,0 +1,10 @@
+{
+    "name": "orderService",
+    "version": "1.0.0",
+    "description": "Lambda para crear pedidos",
+    "main": "index.js",
+    "dependencies": {
+      "aws-sdk": "^2.1360.0"
+    }
+  }
+

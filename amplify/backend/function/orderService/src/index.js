@@ -1,4 +1,7 @@
-const AWS = require("aws-sdk");
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */const AWS = require("aws-sdk");
 const { v4: uuid } = require("uuid");
 const ddb = new AWS.DynamoDB.DocumentClient();
 const ses = new AWS.SES();

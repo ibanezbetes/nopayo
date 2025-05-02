@@ -24,9 +24,9 @@
       },
       "function": {
         "orderService": {
-          "ordersTableName": "Order-u6n77kiexfco7gvh7674nbhx3m-dev",
           "deploymentBucketName": "amplify-nopayo-dev-14b43-deployment",
-          "s3Key": "amplify-builds/orderService-6e2f5244354479706330-build.zip"
+          "s3Key": "amplify-builds/orderService-7145394a612b34583630-build.zip",
+          "ordersTableName": "Order-u6n77kiexfco7gvh7674nbhx3m-dev"
         }
       }
     }
