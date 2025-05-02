@@ -1,0 +1,19 @@
+type Order @model {
+  id: ID!
+  userId: ID!
+  date: AWSDateTime!
+  total: Float!
+  status: String!
+}
+
+type Address @model
+  @auth(rules: [{ allow: owner, ownerField: "userId" }]) {
+  userId: ID!
+  email: AWSEmail!
+  firstName: String
+  lastName: String
+  line: String
+  postal: String
+  locality: String
+  phone: String
+}

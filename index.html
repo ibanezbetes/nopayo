@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <!--=============== FAVICON ===============-->
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+
   <!--=============== REMIXICONS ===============-->
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.0.1/remixicon.min.css"/>
+
   <!--=============== SWIPER CSS ===============-->
   <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
+
   <!--=============== ESTILOS ===============-->
   <link rel="stylesheet" href="assets/css/styles.css" />
+
   <title>Nopayo — Inicio</title>
 </head>
 <body>
@@ -28,16 +33,12 @@
           <li class="nav__item"><a href="sudaderas.html" class="nav__link">Sudaderas</a></li>
           <li class="nav__item"><a href="otros.html" class="nav__link">Otros</a></li>
           <li class="nav__item"><a href="gallery.html" class="nav__link">Galería</a></li>
-
-          <!-- LOGIN / LOGOUT -->
           <li class="nav__item" id="nav-login">
             <a href="#" class="nav__link">Iniciar sesión</a>
           </li>
           <li class="nav__item hidden" id="nav-logout">
             <a href="#" class="nav__link">Cerrar sesión</a>
           </li>
-
-          <!-- MI CUENTA -->
           <li class="nav__item hidden" id="nav-account">
             <a href="account.html" class="nav__link">Mi cuenta</a>
           </li>
@@ -52,7 +53,7 @@
     </nav>
   </header>
 
-  <!--==================== MAIN ====================-->
+  <!--==================== MAIN / SWIPER ====================-->
   <main class="main">
     <section class="home">
       <div class="home__container container">
@@ -109,11 +110,8 @@
         <p id="modal-description"></p>
         <label for="modal-size">Talla:</label>
         <select id="modal-size">
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-          <option>XXL</option>
+          <option value="">Selecciona…</option>
+          <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
         </select>
         <p class="modal__price">Precio: €<span id="modal-price"></span></p>
         <div class="modal__buttons">

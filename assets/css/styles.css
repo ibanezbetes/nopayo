@@ -164,3 +164,93 @@ select#modal-size{padding:.25rem;border:none;border-radius:4px}
   ::-webkit-scrollbar{width:.6rem;background:hsl(0,0%,75%)}
   ::-webkit-scrollbar-thumb{background:hsl(0,0%,65%)}
 }
+
+/*───────────────────────────────────────────────────────────────────────────────
+  Estilos específicos para cart.html
+───────────────────────────────────────────────────────────────────────────────*/
+/* 1) Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+table th,
+table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+/* 2) Botón “Proceder a pago” */
+.btn,
+#checkout-btn {
+  display: inline-block;
+  background-color: var(--first-color);
+  color:            var(--accent-color);
+  border:           none;
+  padding:          0.75rem 1.5rem;
+  border-radius:    4px;
+  font-weight:      var(--font-semi-bold);
+  cursor:           pointer;
+  transition:       background-color 0.3s ease;
+}
+.btn:hover,
+#checkout-btn:hover {
+  background-color: var(--first-color-lighten);
+}
+
+/* 3) Botones + / – y ✕ */
+.qty-btn,
+.del-btn {
+  background-color: var(--accent-color);
+  color:            var(--black-color);
+  border:           none;
+  padding:          0.25rem 0.5rem;
+  border-radius:    4px;
+  font-size:        1rem;
+  cursor:           pointer;
+  transition:       background-color 0.3s ease;
+}
+.qty-btn:hover,
+.del-btn:hover {
+  background-color: var(--first-color);
+  color:            var(--accent-color);
+}
+
+/*───────────────────────────────────────────────────────────────────────────────
+  Responsividad para cart.html en móviles
+───────────────────────────────────────────────────────────────────────────────*/
+
+/* Envolvemos la tabla para scroll */
+.home__container {
+  position: relative;
+}
+
+/* Media query para pantallas estrechas */
+@media (max-width: 768px) {
+  /* 1) Contenedor con scroll */
+  .home__container table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* suaviza el scroll en iOS */
+    white-space: nowrap;
+  }
+
+  /* 2) Reducir paddings de celdas */
+  .home__container table th,
+  .home__container table td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* 3) Botón checkout a ancho completo */
+  #checkout-btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}

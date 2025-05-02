@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "nopayo",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authnopayobe8f34db",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

@@ -11,6 +11,7 @@
   <title>Nopayo — Camisetas</title>
 </head>
 <body>
+  <!--==================== HEADER ====================-->
   <header class="header" id="header">
     <nav class="nav container">
       <a href="index.html" class="nav__logo">
@@ -41,6 +42,7 @@
     </nav>
   </header>
 
+  <!--==================== MAIN / SWIPER ====================-->
   <main class="main">
     <section class="home">
       <div class="home__container container">
@@ -94,11 +96,8 @@
         <p id="modal-description"></p>
         <label for="modal-size">Talla:</label>
         <select id="modal-size">
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-          <option>XXL</option>
+          <option value="">Selecciona…</option>
+          <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
         </select>
         <p class="modal__price">Precio: €<span id="modal-price"></span></p>
         <div class="modal__buttons">
@@ -110,19 +109,13 @@
     </div>
   </div>
 
-  <script src="assets/js/swiper-bundle.min.js"></script>
-  <script type="module">
-    import { getProducts, normalizaSlides, buildSlides, initSwiper, attachModalLogic } from './assets/js/home.js';
-    (async () => {
-      const wrapper = document.getElementById('home-swiper-wrapper');
-      const all = await getProducts();
-      const filtered = all.filter(p => p.category === 'Camisetas');
-      const items = normalizaSlides(filtered);
-      wrapper.innerHTML = buildSlides(items);
-      initSwiper();
-      attachModalLogic();
-    })();
+  <!--==================== FILTRO, SWIPER, HOME.JS, MENU ====================-->
+  <script>
+    // Sólo "Camisetas"
+    window.FILTER_CATEGORY = 'Camisetas';
   </script>
+  <script src="assets/js/swiper-bundle.min.js"></script>
+  <script type="module" src="assets/js/home.js"></script>
   <script src="assets/js/menu.js"></script>
 </body>
 </html>

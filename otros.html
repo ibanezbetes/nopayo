@@ -8,9 +8,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.0.1/remixicon.min.css"/>
   <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
   <link rel="stylesheet" href="assets/css/styles.css" />
-  <title>Nopayo — Otros</title>
+  <title>Nopayo — Camisetas</title>
 </head>
 <body>
+  <!--==================== HEADER ====================-->
   <header class="header" id="header">
     <nav class="nav container">
       <a href="index.html" class="nav__logo">
@@ -41,10 +42,11 @@
     </nav>
   </header>
 
+  <!--==================== MAIN / SWIPER ====================-->
   <main class="main">
     <section class="home">
       <div class="home__container container">
-        <!-- <div class="home__content">
+        <div class="home__content">
           <div class="home__circle">
             <div class="home__subcircle"></div>
             <img src="images/LOGO-PATAS_CRUZADAS_yellow.png"
@@ -56,8 +58,7 @@
           </div>
           <div class="swiper-button-prev"><i class="ri-arrow-left-line"></i></div>
           <div class="swiper-button-next"><i class="ri-arrow-right-line"></i></div>
-        </div>-->
-        <h1>Próximamente</h1>
+        </div>
         <footer class="home__footer">
           <div class="home__social">
             <a href="mailto:nopayo.es@gmail.com" class="home__social-link">
@@ -79,6 +80,7 @@
     </section>
   </main>
 
+  <!--==================== MODAL PRODUCTO ====================-->
   <div id="product-modal" class="modal hidden">
     <div class="modal__backdrop" id="modal-backdrop"></div>
     <div class="modal__box">
@@ -94,11 +96,8 @@
         <p id="modal-description"></p>
         <label for="modal-size">Talla:</label>
         <select id="modal-size">
-          <option>S</option>
-          <option>M</option>
-          <option>L</option>
-          <option>XL</option>
-          <option>XXL</option>
+          <option value="">Selecciona…</option>
+          <option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
         </select>
         <p class="modal__price">Precio: €<span id="modal-price"></span></p>
         <div class="modal__buttons">
@@ -110,19 +109,13 @@
     </div>
   </div>
 
-  <script src="assets/js/swiper-bundle.min.js"></script>
-  <script type="module">
-    import { getProducts, normalizaSlides, buildSlides, initSwiper, attachModalLogic } from './assets/js/home.js';
-    (async () => {
-      const wrapper = document.getElementById('home-swiper-wrapper');
-      const all = await getProducts();
-      const filtered = all.filter(p => p.category !== 'Camisetas' && p.category !== 'Sudaderas');
-      const items = normalizaSlides(filtered);
-      wrapper.innerHTML = buildSlides(items);
-      initSwiper();
-      attachModalLogic();
-    })();
+  <!--==================== FILTRO, SWIPER, HOME.JS, MENU ====================-->
+  <script>
+    // Sólo "Camisetas"
+    window.FILTER_CATEGORY = 'Sudaderas';
   </script>
+  <script src="assets/js/swiper-bundle.min.js"></script>
+  <script type="module" src="assets/js/home.js"></script>
   <script src="assets/js/menu.js"></script>
 </body>
 </html>

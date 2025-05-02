@@ -3,71 +3,156 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <!--=============== FAVICON ===============-->
-  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 
   <!--=============== REMIXICONS ===============-->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.0.1/remixicon.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.0.1/remixicon.min.css" />
 
   <!--=============== ESTILOS ===============-->
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* Empuja el main para que no quede debajo del header */
+    .main { padding-top: calc(var(--header-height) + 6rem); }
 
-  <title>Nopayo — Mi cuenta</title>
+    /* Asegura separación extra para secciones */
+    section { padding-top: 2rem; padding-bottom: 2rem; }
+
+    /* Evita solapamiento en móviles */
+    @media (max-width: 768px) {
+      .main { padding-top: calc(var(--header-height) + 8rem); }
+    }
+
+    /* Estilos Nopayo para títulos de sección */
+    .orders__title, .address__title {
+      font-family: var(--body-font);
+      font-size: var(--h2-font-size);
+      font-weight: var(--font-semi-bold);
+      color: var(--first-color);
+      margin-bottom: 1rem;
+    }
+
+    /* Debug listado de órdenes */
+    #debug-orders { display: none; }
+    .show-debug #debug-orders { display: block; }
+  </style>
+
+  <title>Nopayo — Mi Cuenta</title>
 </head>
 <body>
   <!--==================== HEADER ====================-->
   <header class="header" id="header">
-    <nav class="nav container">
-      <a href="index.html" class="nav__logo"><img src="images/logo.png" alt="NOPAYO — Inicio"></a>
-      <div class="nav__menu" id="nav-menu">
-        <ul class="nav__list">
-          <li class="nav__item"><a href="news.html" class="nav__link">Novedades</a></li>
-          <li class="nav__item"><a href="camisetas.html" class="nav__link">Camisetas</a></li>
-          <li class="nav__item"><a href="sudaderas.html" class="nav__link">Sudaderas</a></li>
-          <li class="nav__item"><a href="otros.html" class="nav__link">Otros</a></li>
-          <li class="nav__item"><a href="gallery.html" class="nav__link">Galería</a></li>
-          <li class="nav__item" id="nav-login"><a href="#" class="nav__link">Iniciar sesión</a></li>
-          <li class="nav__item hidden" id="nav-logout"><a href="#" class="nav__link">Cerrar sesión</a></li>
-          <li class="nav__item hidden" id="nav-account"><a href="account.html" class="nav__link">Mi cuenta</a></li>
-        </ul>
-        <div class="nav__close" id="nav-close"><i class="ri-close-line"></i></div>
-      </div>
-      <div class="nav__actions">
-        <a href="favorites.html"><i class="ri-heart-3-line"></i></a>
-        <a href="cart.html"><i class="ri-shopping-cart-line"></i></a>
-        <div class="nav__toggle" id="nav-toggle"><i class="ri-menu-line"></i></div>
-      </div>
+    <nav class="nav container">...
     </nav>
   </header>
 
-  <!--==================== MAIN ====================-->
   <main class="main">
-    <section class="home">
-      <div class="home__container container">
-        <h1>Mi cuenta</h1>
-        <p>Bienvenido, <span id="user-email"></span></p>
-        <p>Último acceso: <span id="user-last"></span></p>
+    <!-- Pedidos -->
+    <section class="orders">
+      <div class="orders__container container">
+        <h1 class="orders__title">Mis Pedidos</h1>
+        <table id="orders-table">
+          <thead>
+            <tr><th>ID</th><th>Fecha</th><th>Total</th><th>Estado</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p class="no-orders hidden">No tienes pedidos realizados.</p>
+        <p class="no-orders hidden" id="debug-orders" style="color:var(--accent-color);">Si no ves pedidos, crea uno con tu usuario en AppSync (consulta "createOrder").</p>
+      </div>
+    </section>
+
+    <!-- Dirección guardada -->
+    <section class="address">
+      <div class="address__container container">
+        <h1 class="address__title">Mi Dirección</h1>
+        <form id="address-form" class="address__form">
+          <div class="form-group"><label for="addrFirstName">Nombre</label><input type="text" id="addrFirstName" placeholder="Tu nombre" required /></div>
+          <div class="form-group"><label for="addrLastName">Apellidos</label><input type="text" id="addrLastName" placeholder="Tus apellidos" required /></div>
+          <div class="form-group"><label for="addrEmail">Email</label><input type="email" id="addrEmail" readonly /></div>
+          <div class="form-group"><label for="addrLine">Dirección</label><input type="text" id="addrLine" placeholder="Calle, número, piso..." required /></div>
+          <div class="form-group"><label for="addrPostal">Código Postal</label><input type="text" id="addrPostal" placeholder="Código Postal" required /></div>
+          <div class="form-group"><label for="addrLocality">Localidad</label><input type="text" id="addrLocality" placeholder="Localidad" required /></div>
+          <div class="form-group"><label for="addrPhone">Teléfono</label><input type="tel" id="addrPhone" placeholder="Teléfono" required /></div>
+        </form>
+        <button id="save-address-btn" class="btn">Guardar Dirección</button>
       </div>
     </section>
   </main>
 
-  <!--==================== MODAL PRODUCTO ====================-->
-  <div id="product-modal" class="modal hidden">…</div>
+  <!--==================== FOOTER ====================-->
+  <footer class="home__footer">...</footer>
 
-  <!--==================== VISOR DE IMÁGENES ====================-->
-  <div id="viewer" class="viewer hidden">…</div>
+  <!--=============== SCRIPTS ===============-->
+  <script type="module">
+    import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+    import awsconfig from './aws-exports';
+    import { listOrders } from './graphql/queries';
+    import { getAddress, updateAddress } from './graphql/mutations';
 
-  <!--=============== SCROLLREVEAL ===============-->
-  <script src="assets/js/scrollreveal.min.js"></script>
+    Amplify.configure(awsconfig);
 
-  <!--=============== MENU JS ===============-->
+    document.addEventListener('DOMContentLoaded', async () => {
+      const tbody = document.querySelector('#orders-table tbody');
+      const noOrdersMsg = document.querySelector('.no-orders');
+      const debugOrders = document.getElementById('debug-orders');
+      const form = document.getElementById('address-form');
+      const saveBtn = document.getElementById('save-address-btn');
+
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        const userId = user.attributes.sub;
+
+        // Pedidos
+        const result = await API.graphql(
+          graphqlOperation(listOrders, { filter: { userId: { eq: userId } } })
+        );
+        console.log('result listOrders:', result);
+        const orders = result.data.listOrders.items;
+        if (!orders.length) {
+          noOrdersMsg.classList.remove('hidden');
+          debugOrders.classList.remove('hidden');
+        } else {
+          orders.forEach(o => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${o.id}</td>
+              <td>${new Date(o.date).toLocaleDateString('es-ES')}</td>
+              <td>€${o.total.toFixed(2)}</td>
+              <td>${o.status}</td>`;
+            tbody.appendChild(tr);
+          });
+        }
+
+        // Dirección
+        form.addrEmail.value = user.attributes.email;
+        const addrData = await API.graphql(
+          graphqlOperation(getAddress, { userId })
+        );
+        console.log('address:', addrData);
+        const address = addrData.data.getAddress;
+        if (address) Object.entries(address).forEach(([k, v]) => {
+          const inp = form.querySelector(`#addr${k.charAt(0).toUpperCase()+k.slice(1)}`);
+          if (inp) inp.value = v;
+        });
+
+        // Guardar
+        saveBtn.addEventListener('click', async () => {
+          const val = id => form.querySelector(`#${id}`).value;
+          const input = { userId,
+            email: val('addrEmail'), firstName: val('addrFirstName'), lastName: val('addrLastName'),
+            line: val('addrLine'), postal: val('addrPostal'), locality: val('addrLocality'), phone: val('addrPhone')
+          };
+          await API.graphql(graphqlOperation(updateAddress, { input }));
+          alert('Dirección guardada correctamente.');
+        });
+
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML = '<tr><td colspan="4">Debes iniciar sesión para ver tu cuenta.</td></tr>';
+      }
+    });
+  </script>
   <script src="assets/js/menu.js"></script>
-
-  <!--=============== APP JS ===============-->
-  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
