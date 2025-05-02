@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         LOGOUT_URI     = 'https://nopayo.es/logout.html';
 
   document.querySelector('#nav-login a')?.addEventListener('click', () => {
-    window.location.href = `${COGNITO_DOMAIN}/login?client_id=${CLIENT_ID}&response_type=token&scope=openid+email&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+    window.location.href = `${COGNITO_DOMAIN}/login?client_id=${CLIENT_ID}&response_type=token&scope=openid+email&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&lang=es`;
   });
   document.querySelector('#nav-logout a')?.addEventListener('click', () => {
     localStorage.removeItem('idToken');
-    window.location.href = `${COGNITO_DOMAIN}/logout?client_id=${CLIENT_ID}&logout_uri=${encodeURIComponent(LOGOUT_URI)}`;
+    window.location.href = `${COGNITO_DOMAIN}/logout?client_id=${CLIENT_ID}&logout_uri=${encodeURIComponent(LOGOUT_URI)}&lang=es`;
   });
 });
