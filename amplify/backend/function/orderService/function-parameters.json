@@ -1,0 +1,10 @@
+{
+  "permissions": {},
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "ordersTableName",
+      "environmentVariableName": "ORDERS_TABLE_NAME"
+    }
+  ]
+}

@@ -30,6 +30,20 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "AppSync"
+    },
+    "ordersApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "orderService"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
     }
   },
   "auth": {
@@ -58,6 +72,46 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "orderService": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_orderService_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "orderService"
+        }
+      ]
+    },
+    "AMPLIFY_function_orderService_ordersTableName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "orderService"
+        }
+      ]
+    },
+    "AMPLIFY_function_orderService_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "orderService"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "dynamo80e8a6e9": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }

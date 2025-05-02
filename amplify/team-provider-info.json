@@ -16,7 +16,18 @@
         "nopayobe8f34db": {}
       },
       "api": {
-        "nopayo": {}
+        "nopayo": {},
+        "ordersApi": {}
+      },
+      "storage": {
+        "dynamo80e8a6e9": {}
+      },
+      "function": {
+        "orderService": {
+          "ordersTableName": "Order-u6n77kiexfco7gvh7674nbhx3m-dev",
+          "deploymentBucketName": "amplify-nopayo-dev-14b43-deployment",
+          "s3Key": "amplify-builds/orderService-6e2f5244354479706330-build.zip"
+        }
       }
     }
   }
